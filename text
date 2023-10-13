@@ -1,0 +1,136 @@
+
+
+
+
+				laravel
+
+
+	1- composer create-project laravel/laravel ProjectName 
+
+	2-	php artisan make:controller Admin\AdminLoginController
+
+	3-	create a blade file
+
+		admin/login.blade.php
+
+	4-	create Route 
+
+			use App\Http\Controllers\admin\AdminLoginController;
+
+			Route::get('/admin/login',[AdminLoginController::class,'index'])->name('admin.login');
+
+	5- 		Go to controller
+
+			 public function index(){
+        return view('admin.login');
+    	} 
+
+
+    6- 		check blade file
+
+    		type Hello is working
+
+    7- 		http://127.0.0.1:8000/admin/login
+
+    8-		Public/admin-assets
+
+    9-		go to config auth.php
+
+    		    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+
+            'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+
+      10-	php artisan migrate (default table migrate)
+
+      11-	php artisan make:migration alter_users_table
+
+
+      		go to migration
+
+      		 public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+                $table->integer('role')->default(1)->after('email');
+        });
+    }
+
+
+
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+        
+            $table->dropColumn('role');
+
+        });
+    }
+
+    12- table->dropColumn('role');
+
+    13-	php artisan migrate
+
+    14-	php artisan tinker
+
+    		$model = new User();
+    		 $model->name = 'Admin';
+    		 $model->email = 'admin@example.com';
+    		 $model->password = Hash::make('admin');
+    		 $model->role = 2;
+    		 $model->save();
+
+
+    		 $model = new User;
+    		 $model->name ='Abhishek Chaurasia';
+    		 $model->password = Hash::make('admin');
+    		 $model->role = 1;
+    		 $model->save();
+
+
+
+    		 Authenticiate Admin User
+
+    		 download admin tamplate
+
+    		 create admin login interface
+    		 create guards and providers for admin authentication
+    		 run migration and create a role column in the users table
+    		 create an admin user with tinker
+    		 create and Registe Middlewares
+    		 Apply form validation and authentication the user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
